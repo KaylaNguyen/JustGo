@@ -7,6 +7,7 @@ function sendData() {
     var destination = $( 'input[id=destination]').val();
 
     var packedData = origin+","+destination;
-
+    console.log("Got to send data");
+    console.log(packedData);
     window.location.replace("page2.html?" + packedData);
 }

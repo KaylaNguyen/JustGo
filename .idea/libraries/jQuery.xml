@@ -3,6 +3,9 @@
     <properties>
       <option name="frameworkName" value="jQuery" />
       <option name="frameworkVersion" value="2.0" />
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/www/lib/jquery/jquery-2.1.4.js" />
+      </sourceFilesUrls>
     </properties>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/www/lib/jquery/jquery-2.1.4.min.js" />
