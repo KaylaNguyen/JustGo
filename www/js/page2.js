@@ -113,7 +113,7 @@ function createDirection() {
 function findPOI() {
     // recenter and zoom on map
     map.setCenter(dest);
-    map.setZoom(16);
+    map.setZoom(14);
 
     // initialize info window
     infowindow = new google.maps.InfoWindow();
