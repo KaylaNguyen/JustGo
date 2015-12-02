@@ -1,47 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>Take Me With You</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTykhqPRDwmI1ix25cA345iL1GkV-fYw0&libraries=places&callback=initSearch"
+            async defer></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/page1.js"></script>
+        #map {
+            height: 100%;
+        }
 
+        .controls {
+            margin-top: 10px;
+            border: 1px solid transparent;
+            border-radius: 2px 0 0 2px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            height: 32px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #origin-input {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 12px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 300px;
+        }
+
+        #origin-input:focus {
+            border-color: #4d90fe;
+        }
+
+        #destination-input {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 100px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 300px;
+        }
+
+        #destination-input:focus {
+            border-color: #4d90fe;
+        }
+
+        /*.pac-container {*/
+            /*font-family: Roboto;*/
+        /*}*/
+
+        /*#type-selector {*/
+            /*color: #fff;*/
+            /*background-color: #4d90fe;*/
+            /*padding: 5px 11px 0px 11px;*/
+        /*}*/
+
+        #type-selector label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+    </style>
+    <!--<style>-->
+        <!--#target {-->
+            <!--width: 345px;-->
+        <!--}-->
+    <!--</style>-->
 </head>
-
 <body>
-<form class="form-horizontal" role="form" method="GET">
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Take Me With You</h1>
-            <p>Plan your journey!</p>
-        </div>
+<input id="origin-input" class="controls" type="text" placeholder="Origin">
+<input id="destination-input" class="controls" type="text" placeholder="Destination">
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="text">Origin:</label>
-            <div class="col-sm-10">
-                <input type="text" id="origin" placeholder="Enter your origin" name="source">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="pwd">Destination:</label>
-            <div class="col-sm-10">
-                <input type="text" id="destination" placeholder="Enter your destination" name="destination">
-            </div>
-        </div>
-
-    </div>
-</form>
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <button class="btn btn-default" onclick="sendData()">Go!</button>
-    </div>
-</div>
+<div id="map"></div>
+<script type="text/javascript" src="js/index.js"></script>
 </body>
-
 </html>
