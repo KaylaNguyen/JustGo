@@ -10,9 +10,12 @@ var map;
 // variables holding origin and destination latitude and longitude
 var orig;
 var dest;
+// variable holding a list of places to visit
+var listOfDest;
 
 // info window for marker
 var infowindow;
+
 
 /**
  * Called when the program is loaded
@@ -131,6 +134,7 @@ function initSearch() {
             createDirection();
             // wait 2 seconds for direction to be formed, then call findPOIN
             setTimeout(findPOI, 2000);
+            setTimeout(computeDistance, 2000);
         }
     });
 }
@@ -168,6 +172,8 @@ function findPOI() {
     map.setCenter(dest);
     map.setZoom(14);
 
+    listOfDest = [];
+
     // initialize info window
     infowindow = new google.maps.InfoWindow();
 
@@ -200,6 +206,7 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
+            listOfDest.push(results[i]);
         }
         console.log(results);
     }
@@ -215,7 +222,43 @@ function createMarker(place) {
 
     // when clicked on marker, show name and rating of place
     google.maps.event.addListener(marker, 'click', function () {
-        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + '\nRanking: ' + place.rating);
+        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + '\nRating: ' + place.rating);
         infowindow.open(map, this);
     });
+}
+
+// compute distance between 2 places
+function computeDistance(){
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [orig],
+            destinations: dest,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+            avoidHighways: false,
+            avoidTolls: false,
+        }, callback);
+
+    function callback(response, status) {
+        if (status == google.maps.DistanceMatrixStatus.OK) {
+            var origins = response.originAddresses;
+            var destinations = response.destinationAddresses;
+
+            for (var i = 0; i < origins.length; i++) {
+                var results = response.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                    var element = results[j];
+                    var distance = element.distance.text;
+                    var duration = element.duration.text;
+                    var from = origins[i];
+                    var to = destinations[j];
+                    console.log(from);
+                    console.log(to);
+                    console.log(distance);
+                    console.log(duration);
+                }
+            }
+        }
+    }
 }
