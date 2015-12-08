@@ -134,7 +134,7 @@ function initSearch() {
             createDirection();
             // wait 2 seconds for direction to be formed, then call findPOIN
             setTimeout(findPOI, 2000);
-            setTimeout(computeDistance, 2000);
+            setTimeout(computeDistance, 4000);
         }
     });
 }
@@ -172,7 +172,7 @@ function findPOI() {
     map.setCenter(dest);
     map.setZoom(14);
 
-    listOfDest = [];
+    listOfDest = new Array();
 
     // initialize info window
     infowindow = new google.maps.InfoWindow();
@@ -206,9 +206,12 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            listOfDest.push(results[i]);
+            listOfDest.push(results[i].geometry.location);
+            //listOfDest.push(new google.maps.LatLng(results[i].geometry.location.lat(), results[i].geometry.location.lng()));
+
         }
         console.log(results);
+        console.log(listOfDest);
     }
 }
 
@@ -229,11 +232,12 @@ function createMarker(place) {
 
 // compute distance between 2 places
 function computeDistance(){
+    console.log("get to compute distance");
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
         {
             origins: [orig],
-            destinations: dest,
+            destinations: listOfDest,
             travelMode: google.maps.TravelMode.DRIVING,
             unitSystem: google.maps.UnitSystem.IMPERIAL,
             avoidHighways: false,
@@ -253,10 +257,9 @@ function computeDistance(){
                     var duration = element.duration.text;
                     var from = origins[i];
                     var to = destinations[j];
-                    console.log(from);
-                    console.log(to);
-                    console.log(distance);
-                    console.log(duration);
+                    console.log("From: " + from + " ––> " + to);
+                    console.log("Distance: " + distance);
+                    console.log("Duration: " + duration);
                 }
             }
         }

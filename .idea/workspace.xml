@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e984bb28-8aeb-48a1-a39b-3e0497adcec0" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/www/lib/jquery/jquery-2.1.4.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/www/lib/jquery/jquery-2.1.4.min.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/index.html" afterPath="$PROJECT_DIR$/www/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/index.js" afterPath="$PROJECT_DIR$/www/js/index.js" />
     </list>
     <ignored path="Take-Me-With-You.iws" />
@@ -39,8 +35,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.14746544">
-              <caret line="232" column="25" selection-start-line="232" selection-start-column="25" selection-end-line="232" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.6082949">
+              <caret line="255" column="20" selection-start-line="255" selection-start-column="20" selection-end-line="255" selection-end-column="20" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -643,12 +639,12 @@
       <workItem from="1449459368710" duration="1000" />
       <workItem from="1449459816426" duration="382000" />
       <workItem from="1449514787011" duration="153000" />
-      <workItem from="1449516585731" duration="3857000" />
+      <workItem from="1449516585731" duration="5230000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29748000" />
+    <option name="totallyTimeSpent" value="31121000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="720" y="23" width="720" height="796" extended-state="0" />
@@ -801,8 +797,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/js/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.14746544">
-          <caret line="232" column="25" selection-start-line="232" selection-start-column="25" selection-end-line="232" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.6082949">
+          <caret line="255" column="20" selection-start-line="255" selection-start-column="20" selection-end-line="255" selection-end-column="20" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
