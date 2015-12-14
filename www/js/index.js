@@ -133,8 +133,8 @@ function initSearch() {
         if (orig != null && dest != null) {
             createDirection();
             // wait 2 seconds for direction to be formed, then call findPOIN
-            setTimeout(findPOI, 2000);
-            setTimeout(computeDistance, 4000);
+            setTimeout(findPOI, 1000);
+            setTimeout(computeDistance, 2000);
         }
     });
 }
@@ -172,6 +172,7 @@ function findPOI() {
     map.setCenter(dest);
     map.setZoom(14);
 
+    //listOfDest = {};
     listOfDest = new Array();
 
     // initialize info window
@@ -206,12 +207,13 @@ function callback(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
+            // push location to listOfDest
+            //listOfDest[i] = results[i].geometry.location;
             listOfDest.push(results[i].geometry.location);
-            //listOfDest.push(new google.maps.LatLng(results[i].geometry.location.lat(), results[i].geometry.location.lng()));
-
+            //console.log(results);
         }
-        console.log(results);
-        console.log(listOfDest);
+        //console.log(results);
+        //console.log(listOfDest);
     }
 }
 
@@ -230,38 +232,111 @@ function createMarker(place) {
     });
 }
 
-// compute distance between 2 places
-function computeDistance(){
-    console.log("get to compute distance");
-    var service = new google.maps.DistanceMatrixService();
-    service.getDistanceMatrix(
-        {
-            origins: [orig],
-            destinations: listOfDest,
-            travelMode: google.maps.TravelMode.DRIVING,
-            unitSystem: google.maps.UnitSystem.IMPERIAL,
-            avoidHighways: false,
-            avoidTolls: false,
-        }, callback);
+// compute distance between places
+// using nearest neighbor algorithm to get the place order
+function computeDistance() {
+    // 1st set current node is the origin
+    currentNode = orig;
+    // array to store the place order
+    orderArray = [];
+    // hashmap to store place with the distance from currentNode
+    var hmap = {};
+    // keep a counter to count the number of places in the list
+    var listLength = 0;
+    for (item in listOfDest){
+        listLength++;
+    }
+    console.log(listLength);
+    // while there's still place in the list
+    for(i = listLength; i > 0; i--) {
+        console.log("Got to while");
+        // find all distance from currentNode to all places in the list
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix(
+            {
+                origins: [currentNode],
+                destinations: listOfDest,
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
+                avoidHighways: false,
+                avoidTolls: false
+            }, callback);
 
-    function callback(response, status) {
-        if (status == google.maps.DistanceMatrixStatus.OK) {
-            var origins = response.originAddresses;
-            var destinations = response.destinationAddresses;
 
-            for (var i = 0; i < origins.length; i++) {
-                var results = response.rows[i].elements;
-                for (var j = 0; j < results.length; j++) {
-                    var element = results[j];
-                    var distance = element.distance.text;
-                    var duration = element.duration.text;
-                    var from = origins[i];
-                    var to = destinations[j];
-                    console.log("From: " + from + " ––> " + to);
-                    console.log("Distance: " + distance);
-                    console.log("Duration: " + duration);
+        function callback(response, status) {
+            if (status == google.maps.DistanceMatrixStatus.OK) {
+                var origins = response.originAddresses;
+                var destinations = response.destinationAddresses;
+
+                for (var i = 0; i < origins.length; i++) {
+                    var results = response.rows[i].elements;
+                    for (var j = 0; j < results.length; j++) {
+                        var element = results[j];
+                        var distance = element.distance.text;
+                        var duration = element.duration.text;
+                        var from = origins[i];
+                        var to = destinations[j];
+                        //console.log(response);
+                        //console.log(results);
+                        console.log("From: " + from + " ––> " + to);
+                        console.log("Distance: " + distance);
+                        //console.log("Duration: " + duration);
+                        // store the place name and distance and duration to hmap
+                        hmap[to] = {distance: distance, duration: duration, number: j};
+                    }
                 }
             }
         }
+
+        // wait 2 seconds then find distance
+        setTimeout(findShortestDistance, 1000);
+        function findShortestDistance() {
+            // put all distance value from hmap in an array
+            var distanceArray = [];
+            for (var x in hmap) {
+                distanceArray.push(hmap[x]['distance']);
+                console.log(hmap[x]['distance'])
+            }
+            // sort the array
+            distanceArray.sort();
+            // get the shortest distance
+            shortestDistance = distanceArray[0];
+            console.log(shortestDistance);
+            // loop through hmap to find the place that has the smallest distance
+            for (var y in hmap) {
+                if (hmap[y]['distance'] == shortestDistance) {
+                    console.log('hmap at y is ');
+                    console.log(hmap[y]);
+                    // add the place to the orderArray
+                    orderArray.push(currentNode);
+                    // remove that place from listOfDest
+                    index = hmap[y]['number'];
+                    // currentNode is now that place
+                    currentNode = listOfDest[index];
+                    console.log('current node is now ');
+                    console.log(currentNode);
+                    //delete listOfDest[index];
+                    listOfDest[index] = null;
+                    console.log('list of Dest is ');
+                    console.log(listOfDest);
+                    console.log('list length is ' + listLength);
+                    listLength--;
+                    console.log('list length is ' + listLength);
+                    // make a new listOfDest without null object
+                    var tempList = new Array();
+                    for (z in listOfDest){
+                        if (listOfDest[z] != null){
+                            tempList.push(listOfDest[z]);
+                        }
+                    }
+                    listOfDest = tempList;
+                    console.log("listOfDest is now ");
+                    console.log(listOfDest);
+                    break;
+                }
+            }
+        }
+
+        setInterval(1000);
     }
 }
